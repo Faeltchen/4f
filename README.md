@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # reactGo
 
 [![Dependency Status][dep-status-img]][dep-status-link] [![devDependency Status][dev-dep-status-img]][dev-dep-status-link]
@@ -168,3 +169,6 @@ We have two implementations of universal flux:
 License
 ===============
 MIT
+=======
+# 4f
+>>>>>>> 069444e1f90500786a004b4da4504379feed3962
