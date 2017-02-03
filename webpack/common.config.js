@@ -1,6 +1,6 @@
 var path = require('path');
 var fs = require('fs');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 
 var externalNodeModules =
   fs.readdirSync('node_modules')

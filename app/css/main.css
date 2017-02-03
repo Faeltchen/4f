@@ -10,10 +10,14 @@
 body {
   margin: 0;
   font-family: var(--fontMontserrat);
+
+  * {
+    background: green;
+  }
 }
 
 .app {
-  @apply --box;
+
   height: 100%;
   font-weight: normal;
   font-smoothing: antialiased;

@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import classNames from 'classnames/bind';
 import { logOut } from '../actions/users';
-import styles from '../css/components/navigation';
+import styles from '../css/components/navigation.css';
 
 const cx = classNames.bind(styles);
 
@@ -15,9 +15,9 @@ const Navigation = ({ user, logOut }) => {
           className={cx('item', 'logo')}
           activeClassName={cx('active')}>Ninja Ocean</Link>
           { user.authenticated ? (
-            <Link
-              onClick={logOut}
-              className={cx('item')} to="/">Logout</Link>
+              <Link
+                onClick={logOut}
+                className={cx('item')} to="/">Upload</Link>
           ) : (
             <Link className={cx('item')} to="/login">Log in</Link>
           )}

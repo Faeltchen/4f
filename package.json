@@ -28,6 +28,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.0",
     "eslint-plugin-react": "^6.2.0",
     "expect": "^1.15.2",
+    "extract-text-webpack-plugin": "^1.0.1",
     "karma": "^1.1.2",
     "karma-jsdom-launcher": "^4.0.0",
     "karma-mocha": "^1.0.1",
@@ -36,14 +37,17 @@
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^1.7.0",
     "mocha": "^3.0.1",
+    "node-sass": "^4.3.0",
     "nodemon": "^1.10.2",
     "null-loader": "^0.1.1",
     "react-addons-test-utils": "^15.4.1",
     "react-transform-catch-errors": "^1.0.2",
     "redux-mock-store": "1.1.2",
+    "sass-loader": "^4.1.1",
     "sinon": "^1.17.5",
     "stylelint": "^7.1.0",
-    "stylelint-webpack-plugin": "^0.4.2"
+    "stylelint-webpack-plugin": "^0.4.2",
+    "webpack": "^1.14.0"
   },
   "engines": {
     "node": "5.x"
@@ -83,7 +87,7 @@
     "json-loader": "^0.5.4",
     "lodash": "^4.16.2",
     "method-override": "^2.3.5",
-    "mongoose": "^4.5.10",
+    "mongoose": "^4.8.1",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
     "passport-local": "^1.0.0",

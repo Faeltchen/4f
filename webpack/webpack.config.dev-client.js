@@ -7,7 +7,8 @@ var commonConfig = require('./common.config');
 var postCSSConfig = commonConfig.postCSSConfig;
 var assetsPath = commonConfig.output.assetsPath;
 var publicPath = commonConfig.output.publicPath;
-
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var app_dir = path.resolve(__dirname);
 var commonLoaders = [
   {
     /*
@@ -72,11 +73,25 @@ module.exports = {
       // The output path from the view of the Javascript
       publicPath: publicPath
     },
+    /*
     module: {
       loaders: commonLoaders.concat({
         test: /\.css$/,
         loader: 'style!css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
       })
+    },
+    */
+    module: {
+      loaders: commonLoaders.concat(
+        {
+          test: /\.(scss|css)$/,
+          loader: ExtractTextPlugin.extract(
+              'style-loader',
+              'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass?' +
+              'postcss-loader'
+          )
+        }
+      )
     },
     resolve: {
       root: [path.join(__dirname, '..', 'app')],
@@ -86,6 +101,9 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
         new webpack.EnvironmentPlugin(['NODE_ENV']),
+        new ExtractTextPlugin("style.css", {
+            allChunks: true
+        }),
         new styleLintPlugin({
           configFile: path.join(__dirname, '..', '.stylelintrc'),
           context: path.join(__dirname, '..', 'app'),

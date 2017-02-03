@@ -7,7 +7,8 @@ var commonLoaders = commonConfig.commonLoaders;
 var publicPath = commonConfig.output.publicPath;
 var externals = commonConfig.externals;
 var postCSSConfig = commonConfig.postCSSConfig;
-
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var app_dir = path.resolve(__dirname);
 module.exports = {
     // The configuration for the server-side rendering
     name: 'server-side rendering',
@@ -30,10 +31,16 @@ module.exports = {
       libraryTarget: 'commonjs2'
     },
     module: {
-      loaders: commonLoaders.concat({
-        test: /\.css$/,
-        loader: 'css/locals?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
-      })
+      loaders: commonLoaders.concat(
+        {
+          test: /\.(scss|css)$/,
+          loader: ExtractTextPlugin.extract(
+              'style-loader',
+              'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass?' +
+              'postcss-loader'
+          )
+        }
+      )
     },
     resolve: {
       root: [path.join(__dirname, '..', 'app')],
@@ -46,7 +53,10 @@ module.exports = {
         new webpack.BannerPlugin(
           'require("source-map-support").install();',
           { raw: true, entryOnly: false }
-        )
+        ),
+        new ExtractTextPlugin("style.css", {
+            allChunks: true
+        }),
     ],
     postcss: postCSSConfig
 };

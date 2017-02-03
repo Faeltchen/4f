@@ -1,8 +1,10 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { test } from '../actions/images';
 
 const ENTER_KEY_CODE = 13;
 
-export default class TopicTextInput extends Component {
+class TopicTextInput extends Component {
   constructor(props) {
     super(props);
     this.onSave = this.onSave.bind(this);
@@ -36,6 +38,11 @@ export default class TopicTextInput extends Component {
     }
   }
 
+  click() {
+    console.log(this.props.test());
+
+  }
+
   render() {
     const { className, placeholder, value } = this.props;
     return (
@@ -44,6 +51,7 @@ export default class TopicTextInput extends Component {
         placeholder={placeholder}
         onChange={this.onChange}
         onKeyDown={this.onKeyDown}
+        onClick={this.click.bind(this)}
         value={value}
         autoFocus />
     );
@@ -57,3 +65,14 @@ TopicTextInput.propTypes = {
   onEntrySave: PropTypes.func,
   onEntryChange: PropTypes.func
 };
+
+
+function mapStateToProps(state) {
+  return {
+
+  };
+}
+
+// Read more about where to place `connect` here:
+// https://github.com/rackt/react-redux/issues/75#issuecomment-135436563
+export default connect(mapStateToProps, { test })(TopicTextInput);
