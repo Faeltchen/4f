@@ -10,10 +10,6 @@
 body {
   margin: 0;
   font-family: var(--fontMontserrat);
-
-  * {
-    background: green;
-  }
 }
 
 .app {

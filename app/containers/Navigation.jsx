@@ -4,10 +4,45 @@ import { connect } from 'react-redux';
 import classNames from 'classnames/bind';
 import { logOut } from '../actions/users';
 import styles from '../css/components/navigation.css';
-
+import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import { Navbar, Nav, NavDropdown, NavItem, MenuItem, Button } from 'react-bootstrap';
 const cx = classNames.bind(styles);
+const b = classNames.bind(Bootstrap);
 
 const Navigation = ({ user, logOut }) => {
+  console.log(Bootstrap.btn);
+  //className={b("navbar", "navbar-inverse")}
+  return (
+    <span >
+      <Navbar inverse collapseOnSelect>
+        <Navbar.Header>
+          <Navbar.Brand>
+            <a href="#">React-Bootstrap</a>
+          </Navbar.Brand>
+          <Navbar.Toggle />
+        </Navbar.Header>
+        <Navbar.Collapse>
+          <Nav>
+            <NavItem eventKey={1} href="#">Link</NavItem>
+            <NavItem eventKey={2} href="#">Link</NavItem>
+            <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
+              <MenuItem eventKey={3.1}>Action</MenuItem>
+              <MenuItem eventKey={3.2}>Another action</MenuItem>
+              <MenuItem eventKey={3.3}>Something else here</MenuItem>
+              <MenuItem divider />
+              <MenuItem eventKey={3.3}>Separated link</MenuItem>
+            </NavDropdown>
+          </Nav>
+          <Nav pullRight>
+            <NavItem eventKey={1} href="#">Link Right</NavItem>
+            <NavItem eventKey={2} href="#">Link Right</NavItem>
+          </Nav>
+        </Navbar.Collapse>
+      </Navbar>
+    </span>
+  );
+  /*
     return (
       <nav className={cx('navigation')} role="navigation">
         <Link
@@ -19,12 +54,13 @@ const Navigation = ({ user, logOut }) => {
                 onClick={logOut}
                 className={cx('item')} to="/">Upload</Link>
           ) : (
-            <Link className={cx('item')} to="/login">Log in</Link>
+            <Button className={b("btn")} bsStyle="primary">Primary</Button>
           )}
         <Link className={cx('item')} to="/dashboard">Dashboard</Link>
         <Link to="/about" className={cx('item')} activeClassName={cx('active')}>About</Link>
       </nav>
     );
+    */
 };
 
 Navigation.propTypes = {
