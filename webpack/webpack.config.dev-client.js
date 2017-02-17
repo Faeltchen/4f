@@ -36,6 +36,11 @@ var commonLoaders = [
 ];
 
 module.exports = {
+    node: {
+        fs: "empty",
+        net: "empty",
+        tls: "empty"
+    },
     // eval - Each module is executed with eval and //@ sourceURL.
     devtool: 'eval',
     // The configuration for the client
@@ -113,9 +118,13 @@ module.exports = {
           loader: 'file'
         },
         {
+          test: /\.json$/,
+          loader: 'json-loader'
+        },
+        {
           test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
           loader: 'url?limit=10000&mimetype=image/svg+xml'
-        }
+        },
       )
     },
     resolve: {

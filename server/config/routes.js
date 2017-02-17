@@ -4,6 +4,8 @@
 import passport from 'passport';
 import unsupportedMessage from '../db/unsupportedMessage';
 import { controllers, passport as passportConfig } from '../db';
+import multer from 'multer';
+var upload = multer({ dest: 'uploads/' })
 
 const usersController = controllers && controllers.users;
 const topicsController = controllers && controllers.topics;
@@ -57,8 +59,47 @@ export default (app) => {
 
   // topic routes
   if (imageController) {
-    console.log("CONTROLLER");
-    app.post('/image', imageController.add);
+
+
+    //app.post('/image', imageController.add);
+    //app.post('/image', upload.single('avatar'), imageController.add)
+
+  //  app.post('/image', upload.single('avatar'), imageController.add)
+    /*
+    http.post('/image', (res) => {
+      const statusCode = res.statusCode;
+      const contentType = res.headers['content-type'];
+
+      let error;
+      if (statusCode !== 200) {
+        error = new Error(`Request Failed.\n` +
+                          `Status Code: ${statusCode}`);
+      } else if (!/^application\/json/.test(contentType)) {
+        error = new Error(`Invalid content-type.\n` +
+                          `Expected application/json but received ${contentType}`);
+      }
+      if (error) {
+        console.log(error.message);
+        // consume response data to free up memory
+        res.resume();
+        return;
+      }
+
+      res.setEncoding('utf8');
+      let rawData = '';
+      res.on('data', (chunk) => rawData += chunk);
+      res.on('end', () => {
+        try {
+          let parsedData = JSON.parse(rawData);
+          console.log(parsedData);
+        } catch (e) {
+          console.log(e.message);
+        }
+      });
+    }).on('error', (e) => {
+      console.log(`Got error: ${e.message}`);
+    });
+    */
   } else {
     console.info(unsupportedMessage('topics routes'));
   }

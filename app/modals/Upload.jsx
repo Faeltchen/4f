@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import request from "request";
 import { connect } from 'react-redux';
 import Dropzone from 'react-dropzone';
 import {Modal, Button} from 'react-bootstrap';
@@ -35,12 +36,29 @@ class Upload extends Component {
     });
     */
 
+    var req = request.post('/image/', function(){console.log("test")});
 
+    acceptedFiles.forEach((file)=> {
+      console.log(file.name)
+      //  req.attach(file.name, file);
+    });
+    /*
+    request.post({
+      headers: {'content-type' : 'application/x-www-form-urlencoded'},
+      url:     'http://localhost/test2.php',
+      body:    "mes=heydude"
+    }, function(error, response, body){
+      console.log(body);
+    });
+    */
+    req.end(callback);
+
+    /*
     acceptedFiles.forEach((image)=> {
       console.log(image);
-      this.props.createImage({name: image.name, preview: image.preview});
+      this.props.createImage(image);
     });
-
+*/
     /*
     this.setState({
       files: acceptedFiles
@@ -66,7 +84,7 @@ class Upload extends Component {
            <Modal.Title>Modal heading</Modal.Title>
          </Modal.Header>
          <Modal.Body>
-            <Dropzone ref={(node) => { this.dropzone = node; }} onDrop={this.onDrop.bind(this)}>
+            <Dropzone disablePreview={true} ref={(node) => { this.dropzone = node; }} onDrop={this.onDrop.bind(this)}>
               <div>Try dropping some files here, or click to select files to upload.</div>
             </Dropzone>
             <button type="button" onClick={this.onOpenClick}>
