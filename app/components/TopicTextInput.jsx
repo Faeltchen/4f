@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { test } from '../actions/images';
 
 const ENTER_KEY_CODE = 13;
 
@@ -39,7 +38,7 @@ class TopicTextInput extends Component {
   }
 
   click() {
-    console.log(this.props.test());
+  this.props.createImage();
 
   }
 
@@ -69,10 +68,12 @@ TopicTextInput.propTypes = {
 
 function mapStateToProps(state) {
   return {
-
+    topics: state.topic.topics,
+    newTopic: state.topic.newTopic
   };
 }
 
+
 // Read more about where to place `connect` here:
 // https://github.com/rackt/react-redux/issues/75#issuecomment-135436563
-export default connect(mapStateToProps, { test })(TopicTextInput);
+export default connect(mapStateToProps, {  })(TopicTextInput);

@@ -1,0 +1,18 @@
+
+*** These modified files were found in JOE when it aborted on Sat Feb 11 19:54:41 2017
+*** JOE was aborted by UNIX signal 1
+
+*** Datei '(Unbenannt)'
+/root/.gitconfig
+
+*** Datei '/root/.gitconfig'
+# Das ist Git's benutzerspezifische Konfiguraionsdatei.
+[user]
+# Bitte passen Sie die folgenden Zeilen an und kommentieren Sie diese aus:
+#	name = 
+#	email = w.rempel@appcom-interactive.de
+*** Datei '* Startup Log *'
+Processing '/etc/joe/editorrc'...
+Processing '/etc/joe/ftyperc'...
+Finished processing /etc/joe/ftyperc
+Finished processing /etc/joe/editorrc

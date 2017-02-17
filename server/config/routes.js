@@ -57,6 +57,7 @@ export default (app) => {
 
   // topic routes
   if (imageController) {
+    console.log("CONTROLLER");
     app.post('/image', imageController.add);
   } else {
     console.info(unsupportedMessage('topics routes'));
