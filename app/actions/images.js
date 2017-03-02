@@ -12,7 +12,7 @@ import * as types from '../types';
 polyfill();
 
 export function makeImageRequest(method, data, api = '/image') {
-  console.log(data);
+  //console.log(data);
   return request[method](api, data);
 }
 

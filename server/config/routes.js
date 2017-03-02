@@ -1,8 +1,13 @@
 /**
  * Routes for express app
  */
+ import express from 'express';
 import passport from 'passport';
 import unsupportedMessage from '../db/unsupportedMessage';
+
+import imagesUpload from 'images-upload-middleware';
+import corsPrefetch from 'cors-prefetch-middleware';
+
 import { controllers, passport as passportConfig } from '../db';
 import multer from 'multer';
 var upload = multer({ dest: 'uploads/' })
@@ -59,9 +64,23 @@ export default (app) => {
 
   // topic routes
   if (imageController) {
+    console.log(123);
+
+    app.use('/uploads', express.static('./uploads'));
+    app.use(corsPrefetch);
+    app.post('/image', imagesUpload(
+      './uploads',
+      'http://localhost:3000/uploads',
+      false,
+      true
+    ));
 
 
-    //app.post('/image', imageController.add);
+
+
+
+  //  app.post('/image', imageController.add);
+
     //app.post('/image', upload.single('avatar'), imageController.add)
 
   //  app.post('/image', upload.single('avatar'), imageController.add)
