@@ -2,15 +2,12 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import request from 'axios';
 
-import ImagesUploader from 'react-images-uploader';
-import 'react-images-uploader/styles.css';
-
 import {Modal, Button} from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
 import { createImage } from '../actions/images';
 
-class Upload extends Component {
+class Login extends Component {
 
   constructor(props) {
     super(props);
@@ -32,24 +29,12 @@ class Upload extends Component {
 
   render() {
     return (
-      <Modal ref="upload" show={this.state.showModal} onHide={this.close.bind(this)}>
+      <Modal ref="login" show={this.state.showModal} onHide={this.close.bind(this)}>
          <Modal.Header closeButton>
-           <Modal.Title>Upload</Modal.Title>
+           <Modal.Title>Login</Modal.Title>
          </Modal.Header>
          <Modal.Body>
-           <ImagesUploader
-               url="http://localhost:3000/image"
-               multiple={false}
-               optimisticPreviews={false}
-               onLoadEnd={(err) => {
-                  if (err) {
-                    console.log("-->" + err);
-                  }
-                  else {
-                  //  this.setState({ showModal: false });
-                  }
-                }}
-             />
+
          </Modal.Body>
          <Modal.Footer>
            <Button onClick={this.close.bind(this)}>Close</Button>
@@ -65,4 +50,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { createImage })(Upload);
+export default connect(mapStateToProps, { createImage })(Login);

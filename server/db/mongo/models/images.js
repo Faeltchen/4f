@@ -6,7 +6,8 @@ import mongoose from 'mongoose';
 
 const ImageSchema = new mongoose.Schema({
   id: String,
-  name: String,
+  originalFilename: String,
+  genericFilename: String,
   date: { type: Date, default: Date.now }
 });
 

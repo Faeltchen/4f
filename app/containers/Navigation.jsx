@@ -5,6 +5,7 @@ import classNames from 'classnames/bind';
 import { logOut } from '../actions/users';
 
 import Upload from '../modals/Upload';
+import Login from '../modals/Login';
 
 import styles from '../css/components/navigation.css';
 
@@ -14,8 +15,13 @@ const cx = classNames.bind(styles);
 
 class Navigation extends Component {
 
+  componentDidMount() {
+    console.log(this.child);
+  }
   render() {
     var nav = this;
+
+
 
     return (
       <span ref="test">
@@ -28,8 +34,12 @@ class Navigation extends Component {
           </Navbar.Header>
           <Navbar.Collapse>
             <Nav>
-              <NavItem eventKey={1} href="#" onClick={function(){ nav.child.open() }}>Upload</NavItem>
-              <Upload onRef={ref => (this.child = ref)}/>
+              {!this.props.user.authenticated ? <NavItem eventKey={1} href="#" onClick={function(){ nav.upload.open() }}>Upload</NavItem> : null}
+              {!this.props.user.authenticated ? <Upload onRef={ref => (nav.upload = ref)}/>: null}
+
+              {!this.props.user.authenticated ? <NavItem eventKey={2} href="#" onClick={function(){ nav.login.open() }}>Login</NavItem> : null}
+              {!this.props.user.authenticated ? <Login onRef={ref => (nav.login = ref)}/>: null}
+
               <NavItem eventKey={2} href="#">Link</NavItem>
               <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
                 <MenuItem eventKey={3.1}>Action</MenuItem>
