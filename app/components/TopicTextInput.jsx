@@ -37,11 +37,6 @@ class TopicTextInput extends Component {
     }
   }
 
-  click() {
-  this.props.createImage();
-
-  }
-
   render() {
     const { className, placeholder, value } = this.props;
     return (
@@ -50,7 +45,6 @@ class TopicTextInput extends Component {
         placeholder={placeholder}
         onChange={this.onChange}
         onKeyDown={this.onKeyDown}
-        onClick={this.click.bind(this)}
         value={value}
         autoFocus />
     );

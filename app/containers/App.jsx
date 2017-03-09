@@ -1,11 +1,14 @@
-import React, { PropTypes } from 'react';
+import React from "react";
 import classNames from 'classnames/bind';
+
 import Navigation from '../containers/Navigation';
 import Message from '../containers/Message';
-import styles from '../css/main';
+
+import "../scss/common";
+import styles from '../scss/main';
+
 
 const cx = classNames.bind(styles);
-
 
 /*
  * React-router's <Router> component renders <Route>'s
@@ -16,18 +19,24 @@ const cx = classNames.bind(styles);
  * A better explanation of react-router is available here:
  * https://github.com/rackt/react-router/blob/latest/docs/Introduction.md
  */
-const App = ({children}) => {
-  return (
-    <div className={cx('app')}>
-      <Navigation />
-      <Message />
-        {children}
-    </div>
-  );
-};
 
-App.propTypes = {
-  children: PropTypes.object
-};
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+  }
+
+  render() {
+      //var lock = new Auth0Lock(  'ADBPcMnmiCtR4gxu1B3H5GtEz9Ht9xtO', '4fickr.eu.auth0.com', {})
+    return (
+      <div className={cx('app')}>
+        <Navigation auth={this.props.route.auth}/>
+        <Message />
+          {this.props.children}
+      </div>
+    );
+  }
+}
 
 export default App;

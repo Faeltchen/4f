@@ -54,6 +54,15 @@ const linkAssets = () => {
   return isProduction ? links : links.filter(l => l.rel !== 'stylesheet');
 };
 
+const scriptAssets = () => {
+  const scripts = [
+
+  ];
+  return scripts;
+};
+
+
 export const title = 'reactGo - just ship it';
 export const meta = metaAssets();
 export const link = linkAssets();
+export const script = scriptAssets();

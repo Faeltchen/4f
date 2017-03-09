@@ -8,8 +8,6 @@ import unsupportedMessage from '../db/unsupportedMessage';
 import corsPrefetch from 'cors-prefetch-middleware';
 
 import { controllers, passport as passportConfig } from '../db';
-import multer from 'multer';
-var upload = multer({ dest: 'uploads/' })
 
 const usersController = controllers && controllers.users;
 const topicsController = controllers && controllers.topics;

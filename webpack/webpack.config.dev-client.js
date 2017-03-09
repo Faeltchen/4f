@@ -129,7 +129,7 @@ module.exports = {
     },
     resolve: {
       root: [path.join(__dirname, '..', 'app')],
-      extensions: ['', '.js', '.jsx', '.css'],
+      extensions: ['', '.js', '.jsx', '.css', '.scss'],
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
@@ -138,6 +138,13 @@ module.exports = {
         new ExtractTextPlugin("style.css", {
             allChunks: true
         }),
+        /*
+        new webpack.optimize.UglifyJsPlugin({
+          compressor: {
+            warnings: false
+          }
+        }),
+        */
         new styleLintPlugin({
           configFile: path.join(__dirname, '..', '.stylelintrc'),
           context: path.join(__dirname, '..', 'app'),

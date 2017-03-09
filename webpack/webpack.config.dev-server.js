@@ -68,7 +68,7 @@ module.exports = {
     },
     resolve: {
       root: [path.join(__dirname, '..', 'app')],
-      extensions: ['', '.js', '.jsx', '.css'],
+      extensions: ['', '.js', '.jsx', '.css', '.scss'],
     },
     externals: externals,
     plugins: [
@@ -78,6 +78,13 @@ module.exports = {
           'require("source-map-support").install();',
           { raw: true, entryOnly: false }
         ),
+        /*
+        new webpack.optimize.UglifyJsPlugin({
+          compressor: {
+            warnings: false
+          }
+        }),
+        */
         new ExtractTextPlugin("style.css", {
             allChunks: true
         }),

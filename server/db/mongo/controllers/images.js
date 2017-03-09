@@ -62,7 +62,6 @@ export function add(req, res, next) {
 
 function sendError(res, error) {
 	var err = new Error(error);
-	console.error(err);
 	res.sendStatus(400);
 }
 

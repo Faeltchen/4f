@@ -49,6 +49,7 @@ export default function render(req, res) {
    * If all three parameters are `undefined`, this means that there was no route found matching the
    * given location.
    */
+
   match({routes, location: req.url}, (err, redirect, props) => {
     if (err) {
       res.status(500).json(err);
@@ -57,6 +58,18 @@ export default function render(req, res) {
     } else if (props) {
       // This method waits for all render component
       // promises to resolve before returning to browser
+      // configure redux-auth BEFORE rendering the page
+      /*
+      store.dispatch(configure(
+        // use the FULL PATH to your API
+        {apiUrl: "http://h2548589.stratoserver.net:3000"},
+        {isServer, cookies, currentLocation}
+      ));
+      */
+
+    //  console.log(props);
+
+
       store.dispatch({ type: types.CREATE_REQUEST });
       preRenderMiddleware(props)
       .then(data => {
@@ -68,6 +81,7 @@ export default function render(req, res) {
         console.error(err);
         res.status(500).json(err);
       });
+
     } else {
       res.sendStatus(404);
     }

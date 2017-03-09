@@ -6,21 +6,23 @@ import { syncHistoryWithStore } from 'react-router-redux';
 import createRoutes from './routes';
 import * as types from './types';
 import configureStore from './store/configureStore';
-import preRenderMiddleware from './middlewares/preRenderMiddleware';
 
-// Grab the state from a global injected into
-// server-generated HTML
+import App from './containers/App';
+
+import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
+
+
+import AuthService from './utils/AuthService';
+const auth = new AuthService('ADBPcMnmiCtR4gxu1B3H5GtEz9Ht9xtO', '4fickr.eu.auth0.com');
+
 const initialState = window.__INITIAL_STATE__;
 
 const store = configureStore(initialState, browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
-const routes = createRoutes(store);
+const routes = createRoutes(store, auth);
 
-import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
 
-/**
- * Callback function handling frontend route changes.
- */
+
 function onUpdate() {
   // Prevent duplicate fetches when first loaded.
   // Explanation: On server-side render, we already have __INITIAL_STATE__
@@ -40,12 +42,24 @@ function onUpdate() {
   });
 }
 
+/**
+ * Callback function handling frontend route changes.
+ */
 
 // Router converts <Route> element hierarchy to a route config:
 // Read more https://github.com/rackt/react-router/blob/latest/docs/Glossary.md#routeconfig
+/*
+
 render(
   <Provider store={store}>
-    <Router history={history} onUpdate={onUpdate}>
-      {routes}
-    </Router>
-  </Provider>, document.getElementById('app'));
+    <App AuthService={auth}/>
+  </Provider>, document.getElementById('app')
+);
+*/
+  render(
+    <Provider store={store}>
+      <Router history={history} onUpdate={onUpdate} auth={auth}>
+        {routes}
+      </Router>
+    </Provider>, document.getElementById('app')
+  );
