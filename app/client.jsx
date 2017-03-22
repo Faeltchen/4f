@@ -10,7 +10,7 @@ import configureStore from './store/configureStore';
 import App from './containers/App';
 
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
-
+import Common from "./scss/common";
 
 import AuthService from './utils/AuthService';
 const auth = new AuthService('ADBPcMnmiCtR4gxu1B3H5GtEz9Ht9xtO', '4fickr.eu.auth0.com');

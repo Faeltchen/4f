@@ -17,9 +17,13 @@ export default (app) => {
 
   // user routes
   if (usersController) {
+    app.post('/api/user', usersController.create);
+
+    /*
     app.post('/login', usersController.login);
     app.post('/signup', usersController.signUp);
     app.post('/logout', usersController.logout);
+    */
   } else {
     console.warn(unsupportedMessage('users routes'));
   }
@@ -61,8 +65,8 @@ export default (app) => {
 
   // topic routes
   if (imageController) {
-    app.use('/uploads', express.static('./uploads'));
-    app.use(corsPrefetch);
+    //app.use('/uploads', express.static('./uploads'));
+    //app.use(corsPrefetch);
     app.post('/image', imageController.add);
 
 

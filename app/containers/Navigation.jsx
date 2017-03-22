@@ -1,15 +1,14 @@
 import React  from 'react';
-import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import classNames from 'classnames/bind';
-import { logOut } from '../actions/users';
+import { loginAuthentification } from '../actions/users';
 
 import Upload from '../modals/Upload';
 import SignUp from '../modals/SignUp';
 import Login from '../modals/Login';
 
 import styles from '../css/components/navigation.css';
-
+import logo from '../images/logo.gif';
 
 import { Navbar, Nav, NavDropdown, NavItem, MenuItem, Modal, Button} from 'react-bootstrap';
 const cx = classNames.bind(styles);
@@ -19,7 +18,7 @@ class Navigation extends React.Component {
   render() {
     const auth = this.props.auth;
 
-    var nav = this;
+    var obj = this;
 
     return (
       <span ref="test">
@@ -27,20 +26,23 @@ class Navigation extends React.Component {
           <Navbar inverse collapseOnSelect>
             <Navbar.Header>
                 <Navbar.Brand>
-                  <a href="#">4fickr</a>
+                  { /* <a href="#"><img src={logo} alt="logo" height="60px"/></a> */ }
+                  4fickr
                 </Navbar.Brand>
               <Navbar.Toggle />
             </Navbar.Header>
             <Navbar.Collapse>
               <Nav>
-                {auth.loggedIn() ? <NavItem eventKey={1} href="#" onClick={function(){ nav.upload.open() }}>Upload</NavItem> : null}
-                {auth.loggedIn() ? <Upload onRef={ref => (nav.upload = ref)}/>: null}
+                {auth.loggedIn() ? <NavItem eventKey={1} href="#" onClick={function(){ obj.upload.open() }}>Upload</NavItem> : null}
+                {auth.loggedIn() ? <Upload onRef={ref => (obj.upload = ref)}/>: null}
 
-                {!auth.loggedIn() ? <NavItem eventKey={2} href="#" onClick={function(){ nav.login.open() }}>Login</NavItem> : null}
-                {!auth.loggedIn() ? <Login auth={auth} onRef={ref => (nav.login = ref)}/>: null}
+                {auth.loggedIn() ? <NavItem eventKey={2} href="#" onClick={function(){ obj.upload.open() }}>Video</NavItem> : null}
 
-                {!auth.loggedIn() ? <NavItem eventKey={3} href="#" onClick={function(){ nav.signup.open() }}>Sign Up</NavItem> : null}
-                {!auth.loggedIn() ? <SignUp auth={auth} onRef={ref => (nav.signup = ref)}/>: null}
+                {!auth.loggedIn() ? <NavItem eventKey={3} href="#" onClick={function(){ obj.login.open() }}>Login</NavItem> : null}
+                {!auth.loggedIn() ? <Login auth={auth} onRef={ref => (obj.login = ref)}/>: null}
+
+                {!auth.loggedIn() ? <NavItem eventKey={4} href="#" onClick={function(){ obj.signup.open() }}>Sign Up</NavItem> : null}
+                {!auth.loggedIn() ? <SignUp auth={auth} onRef={ref => (obj.signup = ref)}/>: null}
 
                 <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
                   <MenuItem eventKey={3.1}>Action</MenuItem>
@@ -51,8 +53,7 @@ class Navigation extends React.Component {
                 </NavDropdown>
               </Nav>
               <Nav pullRight>
-                <NavItem eventKey={1} href="#">Link Right</NavItem>
-                <NavItem eventKey={2} href="#">Link Right</NavItem>
+                {auth.loggedIn() ? <NavItem eventKey={1} onClick={function(){ auth.logout(); obj.props.loginAuthentification(false); }} href="#">Logout</NavItem> : null}
               </Nav>
             </Navbar.Collapse>
           </Navbar>
@@ -68,4 +69,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { logOut })(Navigation);
+export default connect(mapStateToProps, { loginAuthentification })(Navigation);

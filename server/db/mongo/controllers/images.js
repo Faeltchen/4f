@@ -2,15 +2,58 @@ import _ from 'lodash';
 import Image from '../models/images';
 import path from "path";
 import fs from "fs";
+import jwt from "jsonwebtoken";
 
-var _multiparty = require('multiparty');
-var _multiparty2 = _interopRequireDefault(_multiparty);
-var _fs2 = _interopRequireDefault(fs);
+//var _multiparty = require('multiparty');
+//var _multiparty2 = _interopRequireDefault(_multiparty);
+//var _fs2 = _interopRequireDefault(fs);
+var multiparty = require('multiparty');
+var util = require('util');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-
 export function add(req, res, next) {
+
+  /*
+  jwt.verify(req.get("id_token"), "tR-nhJmQwnZALTVuGMNmg97OCY2maiuWFpYlZ9EwauHonL3aQuQgud513ZdGTtrV", { algorithms: ['HS256'] }, function(err, decoded) {
+    console.log(decoded) // bar
+  });
+  */
+  // invalid token - synchronous
+
+  var cert = fs.readFileSync('4fickr.pem');  // get public key
+
+  jwt.verify(req.get("id_token"), cert, function(err, decoded) {
+    if(decoded) {
+      console.log(decoded); // bar
+
+      var form = new multiparty.Form({uploadDir: "./uploads"});
+
+      form.parse(req, function(err, fields, files) {
+        res.writeHead(200, {'content-type': 'text/plain'});
+        res.write('received upload:\n\n');
+        res.end(util.inspect({fields: fields, files: files}));
+      });
+
+
+      /*
+      Image.create({
+        originalFilename: originalFilename,
+        genericFilename: fileName,
+        }, (err) => {
+          if (err) {
+            console.log('Error on upload!');
+          }
+        }
+      );
+      */
+    }
+
+    if(err)
+      console.log(err);
+  });
+
+  /*
   var savePath = './uploads';
   var servePath = 'http://localhost:3000/uploads';
 
@@ -58,6 +101,7 @@ export function add(req, res, next) {
       res.sendStatus(400);
     }
   });
+  */
 }
 
 function sendError(res, error) {

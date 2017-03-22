@@ -4,10 +4,8 @@ import classNames from 'classnames/bind';
 import Navigation from '../containers/Navigation';
 import Message from '../containers/Message';
 
-import "../scss/common";
+//import "../scss/common";
 import styles from '../scss/main';
-
-
 const cx = classNames.bind(styles);
 
 /*
@@ -30,7 +28,7 @@ class App extends React.Component {
   render() {
       //var lock = new Auth0Lock(  'ADBPcMnmiCtR4gxu1B3H5GtEz9Ht9xtO', '4fickr.eu.auth0.com', {})
     return (
-      <div className={cx('app')}>
+      <div className={cx("app")}>
         <Navigation auth={this.props.route.auth}/>
         <Message />
           {this.props.children}
@@ -40,3 +38,13 @@ class App extends React.Component {
 }
 
 export default App;
+
+/*
+function mapStateToProps(state) {
+  return {
+
+  };
+}
+
+export default connect(mapStateToProps, {  })(App);
+*/

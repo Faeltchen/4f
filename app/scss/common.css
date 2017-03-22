@@ -1,0 +1,32 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+
+}
+h2 {
+
+}
+h3 {
+
+}
+
+/* BOOTSTRAP CUSTOM */
+.navbar {
+  border-radius: 0 !important;
+  /* background-color: #323232 !important; */
+
+}
+/*
+.navbar .nav a {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: #fff !important;
+  font-weight: bold;
+}
+.navbar img {
+  margin-top: -15px;
+}
+*/

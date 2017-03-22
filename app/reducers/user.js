@@ -1,17 +1,19 @@
 import { combineReducers } from 'redux';
 import * as types from '../types';
 
-const isLogin = (
-  state = true,
+const Authenticated = (
+  state = false,
   action
 ) => {
   switch (action.type) {
-    case types.TOGGLE_LOGIN_MODE:
+    case types.LOGIN_AUTHENTIFICATION:
       return !state;
     default:
       return state;
   }
 };
+
+/*
 
 const message = (
   state = '',
@@ -71,12 +73,10 @@ const authenticated = (
       return state;
   }
 };
+*/
 
 const userReducer = combineReducers({
-  isLogin,
-  isWaiting,
-  authenticated,
-  message
+  Authenticated
 });
 
 export default userReducer;

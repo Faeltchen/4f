@@ -17,6 +17,7 @@ export default class AuthService extends EventEmitter {
       redirectUri: 'http://h2548589.stratoserver.net:3000/'
     })
     this.loggedIn = this.loggedIn.bind(this);
+    this.logout = this.logout.bind(this);
     /*
     this.loggedIn = this.loggedIn.bind(this);
     this.login = this.login.bind(this)
@@ -110,12 +111,11 @@ export default class AuthService extends EventEmitter {
     return profile ? JSON.parse(localStorage.profile) : {}
   }
 
-
+  */
 
   logout() {
     // Clear user token and profile data from localStorage
-    localStorage.removeItem('id_token')
-    localStorage.removeItem('profile')
+    localStorage.removeItem('id_token');
+    localStorage.removeItem('profile');
   }
-  */
 }

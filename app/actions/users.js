@@ -6,6 +6,16 @@ import * as types from '../types';
 
 polyfill();
 
+
+export function loginAuthentification(authentificate) {
+  return {
+    type: types.LOGIN_AUTHENTIFICATION,
+    authentificate
+  };
+}
+
+
+/*
 const getMessage = res => res.response && res.response.data && res.response.data.message;
 
 function makeUserRequest(method, data, api = '/login') {
@@ -120,3 +130,4 @@ export function logOut() {
       });
   };
 }
+*/

@@ -8,7 +8,9 @@ import classNames from 'classnames/bind';
 
 // bootstrap theme
 
-import { createImage } from '../actions/images';
+import { loginAuthentification } from '../actions/users';
+
+var env = process.env.NODE_ENV || 'dev';
 
 class Login extends Component {
 
@@ -40,18 +42,6 @@ class Login extends Component {
       password: ReactDOM.findDOMNode(this.refs.password).value
     }
   }
-  /*
-  login(e) {
-    e.preventDefault()
-    const { username, password } = this.getAuthParams()
-    console.log(this.props.auth.login(username, password));
-  }
-  */
-  setToken(accessToken, idToken) {
-    // Saves user access token and ID token into local storage
-    localStorage.setItem('access_token', accessToken)
-    localStorage.setItem('id_token', idToken)
-  }
 
   login(e) {
     e.preventDefault()
@@ -64,18 +54,22 @@ class Login extends Component {
       password
     }, (err, authResult) => {
       if (err) {
-        console.log("-------------")
-        console.log(err);
+        if(env == "development") {
+          console.error("--- LOGIN ERROR ---")
+          console.log(err);
+        }
 
-        if(err.code == "invalid_grant")
-          obj.setState({validationState: "error"})
+        obj.setState({validationState: "error"})
 
         return
       }
+
       if (authResult && authResult.idToken && authResult.accessToken) {
-        obj.setToken(authResult.accessToken, authResult.idToken)
-        browserHistory.replace('/home')
+        localStorage.setItem('access_token', authResult.accessToken)
+        localStorage.setItem('id_token', authResult.idToken)
         obj.setState({validationState: "success"})
+        obj.props.loginAuthentification(true);
+        //location.reload()
       }
     })
   }
@@ -97,7 +91,7 @@ class Login extends Component {
 
              <FormGroup validationState={this.state.validationState}  controlId="password" >
                <ControlLabel>Password</ControlLabel>
-               <FormControl type="password" ref="password" placeholder="Password" required />
+               <FormControl type="password" ref="password" placeholder="Password"  />
                <FormControl.Feedback />
                {this.state.validationState == "error" ? <HelpBlock>Incorrect email or password.</HelpBlock> : null}
              </FormGroup>
@@ -119,4 +113,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { createImage })(Login);
+export default connect(mapStateToProps, { loginAuthentification })(Login);

@@ -5,16 +5,21 @@
 
 import bcrypt from 'bcrypt-nodejs';
 import mongoose from 'mongoose';
-
+import autoIncrement from'mongoose-auto-increment';
 // Other oauthtypes to be added
 
 /*
  User Schema
  */
+ var connection = mongoose.createConnection("mongodb://localhost/ReactWebpackNode");
+
+ autoIncrement.initialize(connection);
 
 const UserSchema = new mongoose.Schema({
   email: { type: String, unique: true, lowercase: true },
+  nickname: String,
   password: String,
+  auth0_id: String,
   tokens: Array,
   profile: {
     name: { type: String, default: '' },
@@ -27,6 +32,7 @@ const UserSchema = new mongoose.Schema({
   resetPasswordExpires: Date,
   google: {}
 });
+UserSchema.plugin(autoIncrement.plugin, 'Users');
 
 function encryptPassword(next) {
   const user = this;

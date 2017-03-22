@@ -100,7 +100,7 @@ module.exports = {
         */
         {
           test: /\.(scss)$/,
-          loader: 'style!css?module&localIdentName=[name]__[local]___[hash:base64:5]!sass!postcss-loader'
+          loader: 'style!css?module&localIdentName=[name]__[local]___[hash:base64:5]!sass'
         },
         { test: /\.(css)$/,
           loader: 'style!css'

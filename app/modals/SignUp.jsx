@@ -1,9 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux';
-import request from 'axios';
-import {Modal, Form, FormGroup, FormControl, ControlLabel, Button, ButtonToolbar} from 'react-bootstrap';
+import axios from 'axios';
+import {Modal, Form, FormGroup, FormControl, ControlLabel, Button, ButtonToolbar, HelpBlock} from 'react-bootstrap';
 import classNames from 'classnames/bind';
+import { loginAuthentification } from '../actions/users';
+
+var env = process.env.NODE_ENV || 'dev';
 
 // bootstrap theme
 
@@ -15,8 +18,11 @@ class SignUp extends Component {
     this.state = {
       showModal: false,
       validationStateEmail: null,
+      validationEmailError: null,
       validationStateUsername: null,
+      validationUsernameError: null,
       validationStatePassword: null,
+      validationPasswordError: null,
     };
   }
 
@@ -44,20 +50,71 @@ class SignUp extends Component {
   signup() {
     var obj = this;
     const { email, username, password } = this.getAuthParams()
-    obj.props.auth.auth0.redirect.signupAndLogin({
+
+    obj.props.auth.auth0.signup({
       connection: 'Username-Password-Authentication',
       email,
       username,
       password,
-    }, function(err) {
-      if (err) {
-        console.log("------Error---------");
-        console.log(err);
+    }, function (err, res) {
+        if (err) {
+          if(env == "development") {
+            console.error("--- SIGN UP Error ---");
+            console.log(err);
+          }
 
-        if(err.code == "email is required")
-          obj.setState({validationStateEmail: "error"});
-      }
-    })
+          obj.setState({
+            validationStateEmail: null,
+            validationEmailError: null,
+            validationStateUsername: null,
+            validationUsernameError: null,
+            validationStatePassword: null,
+            validationPasswordError: null,
+          });
+          switch(err.code) {
+            case "email is required":
+            case "invalid email address":
+              obj.setState({validationStateEmail: "error"});
+              obj.setState({validationEmailError: err.description});
+            break;
+            case "password is required":
+              obj.setState({validationStatePassword: "error"});
+              obj.setState({validationPasswordError: err.description});
+            break;
+            user_exists
+            case "username_exists":
+              obj.setState({validationStateUsername: "error"});
+              obj.setState({validationUsernameError: "The user already exists or the email is registered."});
+            break;
+            case "missing username for Username-Password-Authentication connection with requires_username enabled":
+              obj.setState({validationStateUsername: "error"});
+              obj.setState({validationUsernameError: "username is required"});
+            break;
+          }
+        }
+        else {
+          var instance = axios.create({
+            baseURL: 'http://h2548589.stratoserver.net:3000/api/',
+            timeout: 1000,
+          });
+          instance.post('user', {
+            auth0_id: res.Id,
+            password: password,
+            username: username,
+            email: email
+          })
+          .then(function (response) {
+            console.log("++++++++++++++")
+            console.log(response);
+            obj.props.loginAuthentification(true);
+            obj.setState({ showModal: false });
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+        }
+    });
+
   }
 
   render() {
@@ -65,32 +122,36 @@ class SignUp extends Component {
 
     return (
       <Modal ref="signup" show={this.state.showModal} onHide={this.close.bind(this)}>
-        <Form onSubmit={this.signup.bind(this)}>
+        <Form>
            <Modal.Header closeButton>
              <Modal.Title>Sign up</Modal.Title>
            </Modal.Header>
            <Modal.Body>
               <FormGroup controlId="email" validationState={this.state.validationStateEmail}>
                 <ControlLabel>Email</ControlLabel>
+                <FormControl.Feedback />
                 <FormControl type="text" ref="email" placeholder="E-Mail" required />
-                
-                {this.state.validationStateEmail == "error" ? <HelpBlock>Email is required.</HelpBlock> : null}
+                {this.state.validationStateEmail == "error" ? <HelpBlock>{this.state.validationEmailError}</HelpBlock> : null}
               </FormGroup>
 
-              <FormGroup controlId="username">
+              <FormGroup controlId="username" validationState={this.state.validationStateUsername}>
                 <ControlLabel>Username</ControlLabel>
+                <FormControl.Feedback />
                 <FormControl type="text" ref="username" placeholder="Username" required />
+                {this.state.validationStateUsername == "error" ? <HelpBlock>{this.state.validationUsernameError}</HelpBlock> : null}
               </FormGroup>
 
-              <FormGroup controlId="password">
+              <FormGroup controlId="password" validationState={this.state.validationStatePassword}>
                 <ControlLabel>Password</ControlLabel>
-                <FormControl type="password" ref="password" placeholder="Password" required />
+                <FormControl.Feedback />
+                <FormControl type="password" ref="password" placeholder="Password"  />
+                {this.state.validationStatePassword == "error" ? <HelpBlock>{this.state.validationPasswordError}</HelpBlock> : null}
               </FormGroup>
            </Modal.Body>
            <Modal.Footer>
              <ButtonToolbar>
                <Button bsStyle="link" className="pull-left" >Rules</Button>
-               <Button type="submit" bsStyle="primary" className="pull-right">Sign Up</Button>
+               <Button onClick={this.signup.bind(this)} bsStyle="primary" className="pull-right">Sign Up</Button>
              </ButtonToolbar>
            </Modal.Footer>
          </Form>
@@ -105,4 +166,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { })(SignUp);
+export default connect(mapStateToProps, { loginAuthentification })(SignUp);
