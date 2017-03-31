@@ -16,6 +16,8 @@ h3 {
 /* BOOTSTRAP CUSTOM */
 .navbar {
   border-radius: 0 !important;
+  border-bottom: 2px solid #9d9d9d;
+  margin: 0;
   /* background-color: #323232 !important; */
 
 }

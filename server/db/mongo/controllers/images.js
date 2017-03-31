@@ -1,5 +1,7 @@
 import _ from 'lodash';
 import Image from '../models/images';
+import Content from '../models/content';
+import User from '../models/user';
 import path from "path";
 import fs from "fs";
 import jwt from "jsonwebtoken";
@@ -25,109 +27,65 @@ export function add(req, res, next) {
 
   jwt.verify(req.get("id_token"), cert, function(err, decoded) {
     if(decoded) {
-      console.log(decoded); // bar
+      var query = User.findOne({ 'auth0_id': decoded.sub.split("|")[1] });
+      // selecting the `name` and `occupation` fields
+      query.select('_id');
 
-      var form = new multiparty.Form({uploadDir: "./uploads"});
+      // execute the query at a later time
+      query.exec(function (err, user) {
+        if (err) return handleError(err);
 
-      form.parse(req, function(err, fields, files) {
-        res.writeHead(200, {'content-type': 'text/plain'});
-        res.write('received upload:\n\n');
-        res.end(util.inspect({fields: fields, files: files}));
-      });
+        var path = "./uploads/"+user._id;
+
+        if (!fs.existsSync(path)) fs.mkdirSync(path);
+
+        var form = new multiparty.Form({uploadDir: path, maxFields: 1});
+        //destination: path + "/" + file.path.split("/")[2].replace(/\.[^/.]+$/, "") + "_200px." + file.path.split("/")[2].split('.').pop(),
+        form.parse(req, function(err, fields, files) {
+          res.writeHead(200, {'content-type': 'text/plain'});
+          res.write('received upload:\n\n');
+          res.end(util.inspect({fields: fields, files: files}));
+
+          Object.keys(files).forEach(function(key, index) {
+            var file = this[key][0];
 
 
-      /*
-      Image.create({
-        originalFilename: originalFilename,
-        genericFilename: fileName,
-        }, (err) => {
-          if (err) {
-            console.log('Error on upload!');
-          }
-        }
-      );
-      */
+            Image.create({
+              user_id: user._id,
+              originalFilename: file.originalFilename,
+              genericFilename: file.path.split("/")[2],
+              }, (err, image) => {
+                if (!err) {
+                  Content.create({
+                    user_id: user._id,
+                    image_id: image._id,
+                    }, (err) => {
+                      if (!err) {
+                        var fs = require('fs')
+                          , gm = require('gm');
+
+                        // resize and remove EXIF profile data
+                        gm(path + "/" + file.path.split("/")[2])
+                        .resize(240, 240)
+                        .noProfile()
+                        .write(path + "/" + file.path.split("/")[2].replace(/\.[^/.]+$/, "") + "_200px." + file.path.split("/")[2].split('.').pop(), function (err) {
+                          if (!err) console.log('done');
+                          else console.log(err);
+                        });
+                      }
+                    }
+                  );
+                }
+              }
+            );
+          }, files);
+        });
+      })
     }
 
     if(err)
       console.log(err);
   });
-
-  /*
-  var savePath = './uploads';
-  var servePath = 'http://localhost:3000/uploads';
-
-  var localSavePath = savePath.charAt(savePath.length - 1) === '/' ? savePath.slice(0, -1) : savePath;
-  var localServePath = servePath.charAt(servePath.length - 1) === '/' ? servePath.slice(0, -1) : servePath;
-
-  var form = new _multiparty2.default.Form();
-  form.parse(req, function (err, fields, files) {
-    if (err) {
-      sendError(res, err);
-      return;
-    }
-    if (files.imageFiles && files.imageFiles.length > 0) {
-        var _files$imageFiles$ = files.imageFiles[0],
-            tempPath = _files$imageFiles$.path,
-            originalFilename = _files$imageFiles$.originalFilename;
-
-        var fileName = originalFilename;
-
-        var fileExtNum = fileName.lastIndexOf('.');
-        var fileExt = fileExtNum < 0 ? '' : fileName.substr(fileExtNum);
-        fileName = '' + Math.floor(Date.now()) + fileExt;
-
-        var _saveFile2 = saveFile(tempPath, localSavePath, localServePath, fileName),
-            _error = _saveFile2.error,
-            _path = _saveFile2.path;
-
-        if (_error) {
-          sendError(res, _error);
-          return;
-        }
-
-        Image.create({
-          originalFilename: originalFilename,
-          genericFilename: fileName,
-          }, (err) => {
-            if (err) {
-              console.log('Error on upload!');
-            }
-          }
-        );
-
-        res.send(JSON.stringify(_path));
-    } else {
-      res.sendStatus(400);
-    }
-  });
-  */
-}
-
-function sendError(res, error) {
-	var err = new Error(error);
-	res.sendStatus(400);
-}
-
-function saveFile(tempPath, savePath, servePath, fileName) {
-	var copyToPath = savePath + '/' + fileName;
-	try {
-		if (!_fs2.default.existsSync(copyToPath)) {
-			var data = _fs2.default.readFileSync(tempPath);
-			// make copy of image to new location
-			_fs2.default.writeFileSync(copyToPath, data);
-			// delete temp image
-			_fs2.default.unlinkSync(tempPath);
-		}
-		return {
-			error: false,
-			path: servePath + '/' + fileName
-		};
-	} catch (e) {
-		return {
-			error: e
-		};
-	}
 }
 
 export default {

@@ -12,6 +12,7 @@ import { controllers, passport as passportConfig } from '../db';
 const usersController = controllers && controllers.users;
 const topicsController = controllers && controllers.topics;
 const imageController = controllers && controllers.images;
+const contentController = controllers && controllers.contents;
 
 export default (app) => {
 
@@ -62,50 +63,20 @@ export default (app) => {
   } else {
     console.warn(unsupportedMessage('topics routes'));
   }
+  console.log(__dirname + '/../uploads');
+  //app.use(express.static(__dirname + '/../uploads'));
+  app.use('/uploads',express.static(__dirname + '/../uploads'));
 
   // topic routes
   if (imageController) {
     //app.use('/uploads', express.static('./uploads'));
     //app.use(corsPrefetch);
     app.post('/image', imageController.add);
+  }
 
-
-    /*
-    http.post('/image', (res) => {
-      const statusCode = res.statusCode;
-      const contentType = res.headers['content-type'];
-
-      let error;
-      if (statusCode !== 200) {
-        error = new Error(`Request Failed.\n` +
-                          `Status Code: ${statusCode}`);
-      } else if (!/^application\/json/.test(contentType)) {
-        error = new Error(`Invalid content-type.\n` +
-                          `Expected application/json but received ${contentType}`);
-      }
-      if (error) {
-        console.log(error.message);
-        // consume response data to free up memory
-        res.resume();
-        return;
-      }
-
-      res.setEncoding('utf8');
-      let rawData = '';
-      res.on('data', (chunk) => rawData += chunk);
-      res.on('end', () => {
-        try {
-          let parsedData = JSON.parse(rawData);
-          console.log(parsedData);
-        } catch (e) {
-          console.log(e.message);
-        }
-      });
-    }).on('error', (e) => {
-      console.log(`Got error: ${e.message}`);
-    });
-    */
-  } else {
-    console.info(unsupportedMessage('topics routes'));
+  if (contentController) {
+    //app.use('/uploads', express.static('./uploads'));
+    //app.use(corsPrefetch);
+    app.get('/content', contentController.get);
   }
 };
