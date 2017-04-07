@@ -42,13 +42,11 @@ export function add(req, res, next) {
         var form = new multiparty.Form({uploadDir: path, maxFields: 1});
         //destination: path + "/" + file.path.split("/")[2].replace(/\.[^/.]+$/, "") + "_200px." + file.path.split("/")[2].split('.').pop(),
         form.parse(req, function(err, fields, files) {
-          res.writeHead(200, {'content-type': 'text/plain'});
-          res.write('received upload:\n\n');
-          res.end(util.inspect({fields: fields, files: files}));
+
+
 
           Object.keys(files).forEach(function(key, index) {
             var file = this[key][0];
-
 
             Image.create({
               user_id: user._id,
@@ -69,8 +67,10 @@ export function add(req, res, next) {
                         .resize(240, 240)
                         .noProfile()
                         .write(path + "/" + file.path.split("/")[2].replace(/\.[^/.]+$/, "") + "_200px." + file.path.split("/")[2].split('.').pop(), function (err) {
-                          if (!err) console.log('done');
-                          else console.log(err);
+
+                            res.writeHead(200, {'content-type': 'text/plain'});
+                            res.end("done");
+                          
                         });
                       }
                     }

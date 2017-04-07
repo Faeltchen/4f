@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import {Modal, Form, FormGroup, FormControl, ControlLabel, Button, ButtonToolbar, HelpBlock} from 'react-bootstrap';
 import classNames from 'classnames/bind';
+import FontAwesome from 'react-fontawesome';
 import { loginAuthentification } from '../actions/users';
 
 var env = process.env.NODE_ENV || 'dev';
@@ -23,12 +24,13 @@ class SignUp extends Component {
       validationUsernameError: null,
       validationStatePassword: null,
       validationPasswordError: null,
+      loading: false,
     };
   }
 
 
   componentDidMount() {
-    this.props.onRef(this)
+    this.props.onRef(this);
   }
 
   close() {
@@ -48,6 +50,7 @@ class SignUp extends Component {
   }
 
   signup() {
+    this.setState({loading: true});
     var obj = this;
     const { email, username, password } = this.getAuthParams()
 
@@ -70,6 +73,7 @@ class SignUp extends Component {
             validationUsernameError: null,
             validationStatePassword: null,
             validationPasswordError: null,
+            loading: false,
           });
           switch(err.code) {
             case "email is required":
@@ -104,13 +108,11 @@ class SignUp extends Component {
             email: email
           })
           .then(function (response) {
-            console.log("++++++++++++++")
-            console.log(response);
             obj.props.loginAuthentification(true);
-            obj.setState({ showModal: false });
+            obj.setState({ showModal: false, loading: false });
           })
           .catch(function (error) {
-            console.log(error);
+            obj.setState({ loading: false });
           });
         }
     });
@@ -121,37 +123,35 @@ class SignUp extends Component {
     const { auth } = this.props;
 
     return (
-      <Modal ref="signup" show={this.state.showModal} onHide={this.close.bind(this)}>
+      <Modal ref="signup" show={this.state.showModal} bsSize={"sm"} onHide={this.close.bind(this)}>
         <Form>
            <Modal.Header closeButton>
              <Modal.Title>Sign up</Modal.Title>
            </Modal.Header>
            <Modal.Body>
               <FormGroup controlId="email" validationState={this.state.validationStateEmail}>
-                <ControlLabel>Email</ControlLabel>
                 <FormControl.Feedback />
                 <FormControl type="text" ref="email" placeholder="E-Mail" required />
                 {this.state.validationStateEmail == "error" ? <HelpBlock>{this.state.validationEmailError}</HelpBlock> : null}
               </FormGroup>
 
               <FormGroup controlId="username" validationState={this.state.validationStateUsername}>
-                <ControlLabel>Username</ControlLabel>
                 <FormControl.Feedback />
                 <FormControl type="text" ref="username" placeholder="Username" required />
                 {this.state.validationStateUsername == "error" ? <HelpBlock>{this.state.validationUsernameError}</HelpBlock> : null}
               </FormGroup>
 
               <FormGroup controlId="password" validationState={this.state.validationStatePassword}>
-                <ControlLabel>Password</ControlLabel>
                 <FormControl.Feedback />
                 <FormControl type="password" ref="password" placeholder="Password"  />
                 {this.state.validationStatePassword == "error" ? <HelpBlock>{this.state.validationPasswordError}</HelpBlock> : null}
               </FormGroup>
+              <a title="Rules">Rules</a>
+              {this.state.loading ? <FontAwesome style={{float: "right"}} name='spinner' spin/> : null}
            </Modal.Body>
            <Modal.Footer>
              <ButtonToolbar>
-               <Button bsStyle="link" className="pull-left" >Rules</Button>
-               <Button onClick={this.signup.bind(this)} bsStyle="primary" className="pull-right">Sign Up</Button>
+               <Button block={true}  onClick={this.signup.bind(this)} bsStyle="primary" className="pull-right">Sign Up</Button>
              </ButtonToolbar>
            </Modal.Footer>
          </Form>

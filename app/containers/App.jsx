@@ -3,10 +3,8 @@ import classNames from 'classnames/bind';
 
 import Navigation from '../containers/Navigation';
 import Message from '../containers/Message';
-import Grid from '../containers/Grid';
 
-
-import "../css/main";
+//import "../css/main";
 import styles from '../scss/main';
 const cx = classNames.bind(styles);
 
@@ -33,7 +31,8 @@ class App extends React.Component {
       <div className={cx("app")}>
         <Navigation auth={this.props.route.auth}/>
         <Message />
-        <Grid auth={this.props.route.auth}/>
+
+        {this.props.children}
       </div>
     );
   }

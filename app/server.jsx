@@ -6,6 +6,14 @@ import * as types from './types';
 import preRenderMiddleware from './middlewares/preRenderMiddleware';
 import { baseURL } from '../config/app';
 import pageRenderer from './utils/pageRenderer';
+import fs from "fs";
+import jwt from "jsonwebtoken";
+
+
+import Image from '../server/db/mongo/models/images';
+import Content from '../server/db/mongo/models/content';
+import Comment from '../server/db/mongo/models/comment';
+import User from '../server/db/mongo/models/user';
 
 // configure baseURL for axios requests (for serverside API calls)
 axios.defaults.baseURL = baseURL;
@@ -15,7 +23,7 @@ axios.defaults.baseURL = baseURL;
  * We grab the state passed in from the server and the req object from Express/Koa
  * and pass it into the Router.run function.
  */
-export default function render(req, res) {
+export function render(req, res) {
   const authenticated = req.isAuthenticated();
   const history = createMemoryHistory();
   const store = configureStore({
@@ -59,16 +67,6 @@ export default function render(req, res) {
       // This method waits for all render component
       // promises to resolve before returning to browser
       // configure redux-auth BEFORE rendering the page
-      /*
-      store.dispatch(configure(
-        // use the FULL PATH to your API
-        {apiUrl: "http://h2548589.stratoserver.net:3000"},
-        {isServer, cookies, currentLocation}
-      ));
-      */
-
-    //  console.log(props);
-
 
       store.dispatch({ type: types.CREATE_REQUEST });
       preRenderMiddleware(props)
@@ -85,5 +83,61 @@ export default function render(req, res) {
     } else {
       res.sendStatus(404);
     }
+  });
+}
+
+export function renderContent(req, res) {
+  //console.log(req.params.id)
+  var q = Content.findOne({ '_id': req.params.id }).populate('image_id');
+  q.exec(function(err, contentData) {
+    var contentData = {content: contentData};
+
+    var q = User.findOne({ '_id': contentData.content.user_id }).select('_id nickname');
+    q.exec(function(err, userData) {
+      userData = {user: userData};
+
+      var q = Comment.find({ 'content_id': req.params.id });
+      q.exec(function(err, commentData) {
+        commentData = {comment: commentData};
+
+        const authenticated = req.isAuthenticated();
+        const history = createMemoryHistory();
+
+        const store = configureStore({
+          user: userData,
+          content: contentData,
+          comment: commentData,
+        }, history);
+        const routes = createRoutes(store);
+
+        match({routes, location: req.url}, (err, redirect, props) => {
+
+          if (err) {
+            res.status(500).json(err);
+          } else if (redirect) {
+            res.redirect(302, redirect.pathname + redirect.search);
+          } else if (props) {
+            // This method waits for all render component
+            // promises to resolve before returning to browser
+            // configure redux-auth BEFORE rendering the page
+
+            store.dispatch({ type: types.CREATE_REQUEST });
+            preRenderMiddleware(props)
+            .then(data => {
+              store.dispatch({ type: types.REQUEST_SUCCESS, data });
+              const html = pageRenderer(store, props);
+              res.status(200).send(html);
+            })
+            .catch(err => {
+              console.error(err);
+              res.status(500).json(err);
+            });
+
+          } else {
+            res.sendStatus(404);
+          }
+        });
+      });
+    });
   });
 }

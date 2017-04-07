@@ -5,7 +5,7 @@ import { connect } from './db';
 import configurePassport from './config/passport';
 import configureExpress from './config/express';
 import configureRoutes from './config/routes';
-import renderMiddleware from '../app/server';
+import {render, renderContent} from '../app/server';
 
 const app = express();
 
@@ -33,6 +33,11 @@ if (isDebug) {
   app.use(require('webpack-hot-middleware')(compiler));
 }
 
+
+app.set('views', __dirname + '/../app/containers');
+app.set('view engine', 'jsx');
+app.engine('jsx', require('express-react-views').createEngine());
+
 /*
  * Bootstrap application settings
  */
@@ -51,6 +56,10 @@ configureRoutes(app);
  * renderMiddleware is a function that requires store data and url
  * to initialize and return the React-rendered html string
  */
-app.get('*', renderMiddleware);
+app.get('/', render);
+
+app.get('/content/:id', renderContent);
+
+
 
 app.listen(app.get('port'));

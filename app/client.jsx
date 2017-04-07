@@ -11,6 +11,8 @@ import App from './containers/App';
 
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
 import Common from "./scss/common";
+import FontAwesome from "./css/font-awesome.css";
+
 
 import AuthService from './utils/AuthService';
 const auth = new AuthService('ADBPcMnmiCtR4gxu1B3H5GtEz9Ht9xtO', '4fickr.eu.auth0.com');
@@ -20,7 +22,6 @@ const initialState = window.__INITIAL_STATE__;
 const store = configureStore(initialState, browserHistory);
 const history = syncHistoryWithStore(browserHistory, store);
 const routes = createRoutes(store, auth);
-
 
 
 function onUpdate() {

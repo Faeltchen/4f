@@ -9,10 +9,10 @@ export function create(req, res, next) {
   var bcrypt = require('react-native-bcrypt');
   var salt = bcrypt.genSaltSync(10);
   var hash = bcrypt.hashSync(req.body.password, salt);
-
+  console.log(req.body);
   const user = new User({
     auth0_id: req.body.auth0_id,
-    nickname: req.body.nickname,
+    nickname: req.body.username,
     email: req.body.email,
     password: hash
   });

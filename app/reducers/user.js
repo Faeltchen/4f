@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
 import * as types from '../types';
 
-const Authenticated = (
-  state = false,
+const user = (
+  state = {},
   action
 ) => {
   switch (action.type) {
@@ -76,7 +76,7 @@ const authenticated = (
 */
 
 const userReducer = combineReducers({
-  Authenticated
+  user
 });
 
 export default userReducer;

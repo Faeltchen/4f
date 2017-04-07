@@ -1,7 +1,7 @@
 /**
  * Routes for express app
  */
- import express from 'express';
+import express from 'express';
 import passport from 'passport';
 import unsupportedMessage from '../db/unsupportedMessage';
 
@@ -13,7 +13,8 @@ const usersController = controllers && controllers.users;
 const topicsController = controllers && controllers.topics;
 const imageController = controllers && controllers.images;
 const contentController = controllers && controllers.contents;
-
+const commentController = controllers && controllers.comments;
+console.log(commentController);
 export default (app) => {
 
   // user routes
@@ -63,20 +64,19 @@ export default (app) => {
   } else {
     console.warn(unsupportedMessage('topics routes'));
   }
-  console.log(__dirname + '/../uploads');
-  //app.use(express.static(__dirname + '/../uploads'));
+
   app.use('/uploads',express.static(__dirname + '/../uploads'));
 
   // topic routes
   if (imageController) {
-    //app.use('/uploads', express.static('./uploads'));
-    //app.use(corsPrefetch);
     app.post('/image', imageController.add);
   }
 
   if (contentController) {
-    //app.use('/uploads', express.static('./uploads'));
-    //app.use(corsPrefetch);
-    app.get('/content', contentController.get);
+    app.post('/comment', commentController.add);
+  }
+
+  if (contentController) {
+    app.get('/main', contentController.get);
   }
 };

@@ -1,7 +1,35 @@
+@import "./vars.scss";
 
 .app {
 
-  .navbar {
-    border-radius: 0 !important;
+}
+
+/* BOOTSTRAP CUSTOM */
+nav.topbar {
+  border-radius: 0 !important;
+  border-bottom: 1px solid $gray;
+  margin: 0 0 2px 0;
+
+  li {
+    a {
+      color: $gray;
+    }
+  }
+}
+
+.upload-form {
+  margin-bottom: 15px;
+
+  > div > div {
+    width: 50%;
+  }
+  > div > div:nth-of-type(1) button {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 0;
+  }
+  > div > div:nth-of-type(2) button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 }

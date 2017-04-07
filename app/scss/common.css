@@ -3,32 +3,76 @@
   padding: 0;
 }
 
-h1 {
-
-}
-h2 {
-
-}
-h3 {
-
+body {
+  background-color: #000;
+  color: #9d9d9d;
 }
 
-/* BOOTSTRAP CUSTOM */
-.navbar {
+a {
+  color: #F44336;
+  cursor: pointer;
+}
+a:hover, a:focus {
+  color: #F44336;
+}
+
+input, textarea {
   border-radius: 0 !important;
-  border-bottom: 2px solid #9d9d9d;
-  margin: 0;
-  /* background-color: #323232 !important; */
+}
 
+span.fa {
+  margin-right: 6px;
 }
-/*
-.navbar .nav a {
-  padding-top: 20px;
-  padding-bottom: 20px;
+
+
+/* BUTTONS */
+.btn-primary {
+  background-color: #F44336 !important;
+  border-color: #B71C1C !important;
+}
+.btn-primary:hover, .btn-primary:focus {
+  border-color: #FF5252 !important;
+  background-color: #F62B2B !important;
+}
+
+/* PROGRESS */
+.progress-bar {
+  background-color: #F44336;
+}
+
+/* FORMS */
+.form-control:focus {
+  border-color: #F44336;
+}
+
+.has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline, .has-error.radio label, .has-error.checkbox label, .has-error.radio-inline label, .has-error.checkbox-inline label {
+  color: #F44336;
+}
+
+.help-block {
+  display: inline-block;
+  color: #fff;
+}
+
+/* MODALS */
+.close  {
   color: #fff !important;
-  font-weight: bold;
+  font-size: 26px;
+  opacity: 0.7;
 }
-.navbar img {
-  margin-top: -15px;
+.close:hover, .close:focus { opacity: 0.9; }
+
+.modal-content {
+  background: #212121;
+  opacity: 0.90;
+  color: #fff;
 }
-*/
+.modal-header {
+  text-align: center;
+  color: #fff;
+}
+.modal-header span {
+  margin-right: 3px;
+}
+.modal-header, .modal-body, .modal-footer, .modal-content { border-color: #BFBFBf !important; }
+.modal-backdrop { opacity: 0.7 !important; }
