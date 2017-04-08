@@ -27,7 +27,7 @@ export function meta(req, res, next) {
   console.log("++++++++++++");
   console.log(req.params.id);
 
-  var q = Content.find({"_id": req.query.id}).populate('image_id').sort({'date': -1}).limit(50);
+  var q = Content.find({"_id": req.query.id}).populate('image_id').sort({'date': 1}).limit(50);
   q.exec(function(err, content) {
 
      res.send(JSON.stringify(content, null, 3));

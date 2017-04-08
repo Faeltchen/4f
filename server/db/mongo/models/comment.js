@@ -7,10 +7,10 @@ import autoIncrement from'mongoose-auto-increment';
 var connection = mongoose.createConnection("mongodb://localhost/ReactWebpackNode");
 
 const CommentSchema = new mongoose.Schema({
-  content_id: {type: String, required: true},
-  user_id: {type: String, required: true},
+  content_id: {type: String, ref: "Content", required: true},
+  user_id: {type: Number, ref: "User"},
   comment: {type: String, required: true},
-  ref_content: {type: mongoose.Schema.Types.ObjectId, ref: "Content"},
+  ref_content: {type: Number, ref: "Content"},
   date: { type: Date, default: Date.now, required: true }
 });
 

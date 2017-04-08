@@ -72,8 +72,9 @@ export default (app) => {
     app.post('/image', imageController.add);
   }
 
-  if (contentController) {
+  if (commentController) {
     app.post('/comment', commentController.add);
+    app.post('/getComments', commentController.get);
   }
 
   if (contentController) {

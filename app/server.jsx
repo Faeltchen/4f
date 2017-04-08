@@ -96,7 +96,8 @@ export function renderContent(req, res) {
     q.exec(function(err, userData) {
       userData = {user: userData};
 
-      var q = Comment.find({ 'content_id': req.params.id });
+//user, { path: 'shortList.flat.project', model: 'Project', select: 'name' }
+      var q = Comment.find({ 'content_id': req.params.id }).populate('user_id', 'nickname');
       q.exec(function(err, commentData) {
         commentData = {comment: commentData};
 
